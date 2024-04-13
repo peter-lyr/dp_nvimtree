@@ -194,7 +194,7 @@ function M.cur_root_sel(node)
   if not dtarget then
     return
   end
-  require 'dp_telescope'.cur_root_sel_do(dtarget)
+  require 'dp_telescope'._cur_root_sel_do(dtarget)
 end
 
 function M.get_root_dir_path(node)
