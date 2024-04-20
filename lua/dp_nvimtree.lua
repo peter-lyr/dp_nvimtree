@@ -292,7 +292,7 @@ function M.sel_path_dirs()
   M._sel_dirs_do(M.get_path_dirs(), 'path dirs')
 end
 
-function M.is_nvim_tree_opened()
+function M._is_nvim_tree_opened()
   for winnr = 1, vim.fn.winnr '$' do
     local bufnr = vim.fn.winbufnr(winnr)
     if B.is_buf_fts('NvimTree', bufnr) then
@@ -768,7 +768,7 @@ B.aucmd({ 'TabEnter', }, 'nvimtree.TabEnter', {
     if B.is_buf_fts 'NvimTree' then
       cur_nvim_tree = 1
     end
-    if M.is_nvim_tree_opened() then
+    if M._is_nvim_tree_opened() then
       vim.cmd 'NvimTreeClose'
       B.set_timeout(10, function()
         vim.cmd 'NvimTreeFindFile'
