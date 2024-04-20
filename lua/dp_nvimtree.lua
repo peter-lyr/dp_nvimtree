@@ -533,7 +533,8 @@ end
 
 function M.last_dir()
   if B.is(M._last_dir) then
-    M.open(M._last_dir) end
+    M.open(M._last_dir)
+  end
 end
 
 function M.toggle()
