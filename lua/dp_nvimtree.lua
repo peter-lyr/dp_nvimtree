@@ -15,6 +15,8 @@ end
 
 M.ausize_en = 1
 
+B.l(M.dirs, {})
+
 M.run_what_list = {
   '"Adobe Audition.exe"',
   '"wmplayer.exe"',
@@ -28,8 +30,6 @@ M.run_whats_list = {
 }
 
 M._run_what_dict = {}
-
-B.l(M.dirs, {})
 
 M._run_whats_dict = {}
 
@@ -623,7 +623,7 @@ function M.reopen_nvimtree()
   B.echo 'reset_nvimtree: config.nvim.nvimtree'
 end
 
-function M.fd(node)
+function M.find_files(node)
   local dtarget = M._get_dtarget(node)
   if not dtarget then
     return
@@ -631,7 +631,7 @@ function M.fd(node)
   B.cmd('Telescope find_files cwd=%s previewer=true', dtarget .. '\\\\')
 end
 
-function M.rg(node)
+function M.live_grep(node)
   local dtarget = M._get_dtarget(node)
   if not dtarget then
     return
@@ -848,16 +848,20 @@ function M._on_attach(bufnr)
     { 'dr',            M._wrap_node(M.cur_root_sel),                mode = { 'n', }, buffer = bufnr, noremap = true, silent = true, nowait = true, desc = 'nvimtree: delete buf', },
   }
   B.lazy_map {
-    { { 'pw', '<MiddleMouse>', }, M._run_what,                                 mode = { 'n', }, buffer = bufnr, noremap = true, silent = true, nowait = true, desc = 'nvimtree: _run_what', },
-    { { 'ps', '<RightMouse>', },  M._run_whats,                                mode = { 'n', }, buffer = bufnr, noremap = true, silent = true, nowait = true, desc = 'nvimtree: _run_whats', },
-    { 'pp',                       function() M._run_what '"wmplayer.exe"' end, mode = { 'n', }, buffer = bufnr, noremap = true, silent = true, nowait = true, desc = 'nvimtree: wmplayer', },
-    { 'pb',                       function() M._run_whats '"bcomp.exe"' end,   mode = { 'n', }, buffer = bufnr, noremap = true, silent = true, nowait = true, desc = 'nvimtree: bcomp', },
-    { 'pr',                       M._wrap_node(M.rg),                          mode = { 'n', }, buffer = bufnr, noremap = true, silent = true, nowait = true, desc = 'nvimtree: rg', },
-    { 'pf',                       M._wrap_node(M.fd),                          mode = { 'n', }, buffer = bufnr, noremap = true, silent = true, nowait = true, desc = 'nvimtree: fd', },
-    { 'p<c-w>',                   function() M._run_what_add() end,            mode = { 'n', }, buffer = bufnr, noremap = true, silent = true, nowait = true, desc = 'nvimtree: _run_what_add', },
-    { 'p<c-s>',                   function() M._run_whats_add() end,           mode = { 'n', }, buffer = bufnr, noremap = true, silent = true, nowait = true, desc = 'nvimtree: _run_whats_add', },
-    { 'pc',                       M._wrap_node(M.decrypt),                     mode = { 'n', }, buffer = bufnr, noremap = true, silent = true, nowait = true, desc = 'nvimtree: decrypt', },
-    { 'pd',                       M._wrap_node(M.encrypt),                     mode = { 'n', }, buffer = bufnr, noremap = true, silent = true, nowait = true, desc = 'nvimtree: encrypt', },
+    { 'pww', function() M._run_what() end,                mode = { 'n', }, buffer = bufnr, noremap = true, silent = true, nowait = true, desc = 'nvimtree: _run_what', },
+    { 'pss', function() M._run_whats() end,               mode = { 'n', }, buffer = bufnr, noremap = true, silent = true, nowait = true, desc = 'nvimtree: _run_whats', },
+    { 'pwa', function() M._run_what_add() end,            mode = { 'n', }, buffer = bufnr, noremap = true, silent = true, nowait = true, desc = 'nvimtree: _run_what_add', },
+    { 'psa', function() M._run_whats_add() end,           mode = { 'n', }, buffer = bufnr, noremap = true, silent = true, nowait = true, desc = 'nvimtree: _run_whats_add', },
+    { 'pp',  function() M._run_what '"wmplayer.exe"' end, mode = { 'n', }, buffer = bufnr, noremap = true, silent = true, nowait = true, desc = 'nvimtree: wmplayer', },
+    { 'pb',  function() M._run_whats '"bcomp.exe"' end,   mode = { 'n', }, buffer = bufnr, noremap = true, silent = true, nowait = true, desc = 'nvimtree: bcomp', },
+  }
+  B.lazy_map {
+    { 'pd', M._wrap_node(M.decrypt), mode = { 'n', }, buffer = bufnr, noremap = true, silent = true, nowait = true, desc = 'nvimtree: decrypt', },
+    { 'pe', M._wrap_node(M.encrypt), mode = { 'n', }, buffer = bufnr, noremap = true, silent = true, nowait = true, desc = 'nvimtree: encrypt', },
+  }
+  B.lazy_map {
+    { 'pl', M._wrap_node(M.live_grep),  mode = { 'n', }, buffer = bufnr, noremap = true, silent = true, nowait = true, desc = 'nvimtree: rg', },
+    { 'pf', M._wrap_node(M.find_files), mode = { 'n', }, buffer = bufnr, noremap = true, silent = true, nowait = true, desc = 'nvimtree: fd', },
   }
   B.lazy_map {
     { 'ga', M._wrap_node(M.git_add_force), mode = { 'n', }, buffer = bufnr, noremap = true, silent = true, nowait = true, desc = 'nvimtree: git_add_force', },
