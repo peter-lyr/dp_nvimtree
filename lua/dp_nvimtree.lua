@@ -662,7 +662,7 @@ function M._open_or_expand_or_dir_up()
   end
 end
 
-function M.reset_nvimtree()
+function M.reopen_nvimtree()
   package.loaded[M.lua] = nil
   require 'dp_nvimtree'
   B.echo 'reset_nvimtree: config.nvim.nvimtree'
@@ -930,7 +930,7 @@ opts['on_attach'] = M._on_attach
 
 require 'nvim-tree'.setup(opts)
 
-function M.open_all()
+function M.open_all_nvimtree()
   local cur_bufnr = vim.fn.bufnr()
   local roots = {}
   vim.cmd 'NvimTreeClose'
@@ -970,11 +970,11 @@ require 'which-key'.register {
   ['<leader>ddm'] = { function() M.sel_my_dirs() end, B.b(M, 'sel_my_dirs'), mode = { 'n', 'v', }, silent = true, },
   ['<leader>da'] = { function() M.ausize_toggle() end, B.b(M, 'ausize_toggle'), mode = { 'n', 'v', }, silent = true, },
   ['<leader>dc'] = { function() M.toggle_cur_root() end, B.b(M, 'toggle_cur_root'), mode = { 'n', 'v', }, silent = true, },
-  ['<leader>de'] = { function() M.refresh_hl() end, B.b(M, 'refresh_hl'), mode = { 'n', 'v', }, silent = true, },
   ['<leader>dj'] = { function() M.open_next_tree_node() end, B.b(M, 'open_next_tree_node'), mode = { 'n', 'v', }, silent = true, },
   ['<leader>dk'] = { function() M.open_prev_tree_node() end, B.b(M, 'open_prev_tree_node'), mode = { 'n', 'v', }, silent = true, },
-  ['<leader>do'] = { function() M.open_all() end, B.b(M, 'open_all'), mode = { 'n', 'v', }, silent = true, },
-  ['<leader>dr'] = { function() M.reset_nvimtree() end, B.b(M, 'reset_nvimtree'), mode = { 'n', }, silent = true, },
+  ['<leader>doa'] = { function() M.open_all_nvimtree() end, B.b(M, 'open_all_nvimtree'), mode = { 'n', 'v', }, silent = true, },
+  ['<leader>drh'] = { function() M.refresh_hl() end, B.b(M, 'refresh_hl'), mode = { 'n', 'v', }, silent = true, },
+  ['<leader>dro'] = { function() M.reopen_nvimtree() end, B.b(M, 'reopen_nvimtree'), mode = { 'n', }, silent = true, },
 }
 
 return M
