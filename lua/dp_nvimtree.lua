@@ -955,7 +955,7 @@ function M.open_all()
 end
 
 require 'which-key'.register {
-  ['<leader>d'] = { name = 'nvimtree/qf', },
+  ['<leader>d'] = { name = 'nvimtree', },
   ['<leader>d;'] = { function() M.toggle() end, B.b(M, 'toggle'), mode = { 'n', 'v', }, silent = true, },
   ['<leader>d\''] = { ':<c-u>NvimTreeFindFileToggle<cr>', B.b(M, 'NvimTreeFindFileToggle'), mode = { 'n', 'v', }, silent = true, },
   ['<leader>d<c-l>'] = { function() M.sel_dirs() end, B.b(M, 'sel_dirs'), mode = { 'n', 'v', }, silent = true, },
