@@ -560,8 +560,12 @@ function M.sel_SHGetFolderPath()
   M._sel_dirs_do(B.get_SHGetFolderPath(), 'SHGetFolderPath')
 end
 
-function M.sel_all_git_repos()
+function M.sel_from_all_git_repos()
   M._sel_dirs_do(require 'dp_git'.get_all_git_repos(), 'all_git_repos')
+end
+
+function M.scan_all_git_repos()
+  require 'dp_git'.get_all_git_repos(1)
 end
 
 function M.last_dir()
@@ -953,22 +957,22 @@ end
 require 'which-key'.register {
   ['<leader>d'] = { name = 'nvimtree/qf', },
   ['<leader>d;'] = { function() M.toggle() end, 'nvimtree: toggle', mode = { 'n', 'v', }, silent = true, },
-  ['<leader>dn'] = { ':<c-u>NvimTreeFindFileToggle<cr>', 'nvimtree: toggle(force)', mode = { 'n', 'v', }, silent = true, },
-  ['<leader>dl'] = { function() M.last_dir() end, 'nvimtree: open tree in last dir', mode = { 'n', 'v', }, silent = true, },
-  ['<leader>dd'] = { function() M.sel_dirvers() end, 'nvimtree: open tree in dirvers(sel)', mode = { 'n', 'v', }, silent = true, },
-  ['<leader>dp'] = { function() M.sel_parent_dirs() end, 'nvimtree: open tree in parent dirs(sel)', mode = { 'n', 'v', }, silent = true, },
-  ['<leader>dm'] = { function() M.sel_my_dirs() end, 'nvimtree: open tree in my dirs(sel)', mode = { 'n', 'v', }, silent = true, },
-  ['<leader>dh'] = { function() M.sel_SHGetFolderPath() end, 'nvimtree: open tree in SHGetFolderPath(sel)', mode = { 'n', 'v', }, silent = true, },
-  ['<leader>dg<leader>'] = { function() M.sel_all_git_repos() end, 'nvimtree: open tree in all git repos(sel)', mode = { 'n', 'v', }, silent = true, },
-  ['<leader>dgf'] = { function() require 'dp_git'.get_all_git_repos(1) end, 'nvimtree: open tree in all git repos(sel)(force)', mode = { 'n', 'v', }, silent = true, },
   ['<leader>d<c-l>'] = { function() M.sel_dirs() end, 'nvimtree: open tree in dirs(sel)', mode = { 'n', 'v', }, silent = true, },
   ['<leader>d<c-p>'] = { function() M.sel_path_dirs() end, 'nvimtree: open tree in path dirs(sel)', mode = { 'n', 'v', }, silent = true, },
-  ['<leader>dj'] = { function() M.open_next_tree_node() end, 'quick open: nvimtree next node', mode = { 'n', 'v', }, silent = true, },
-  ['<leader>dk'] = { function() M.open_prev_tree_node() end, 'quick open: nvimtree prev node', mode = { 'n', 'v', }, silent = true, },
-  ['<leader>do'] = { function() M.open_all() end, 'nvimtree: open_all', mode = { 'n', 'v', }, silent = true, },
-  ['<leader>de'] = { function() M.refresh_hl() end, 'nvimtree: refresh hl', mode = { 'n', 'v', }, silent = true, },
   ['<leader>da'] = { function() M.ausize_toggle() end, 'nvimtree: ausize toggle', mode = { 'n', 'v', }, silent = true, },
   ['<leader>dc'] = { function() M.toggle_cur_root() end, 'nvimtree: toggle cur root', mode = { 'n', 'v', }, silent = true, },
+  ['<leader>dd'] = { function() M.sel_dirvers() end, 'nvimtree: open tree in dirvers(sel)', mode = { 'n', 'v', }, silent = true, },
+  ['<leader>de'] = { function() M.refresh_hl() end, 'nvimtree: refresh hl', mode = { 'n', 'v', }, silent = true, },
+  ['<leader>dg<leader>'] = { function() M.sel_from_all_git_repos() end, 'nvimtree: sel_from_all_git_repos', mode = { 'n', 'v', }, silent = true, },
+  ['<leader>dgf'] = { function() M.scan_all_git_repos() end, 'nvimtree: scan_all_git_repos', mode = { 'n', 'v', }, silent = true, },
+  ['<leader>dh'] = { function() M.sel_SHGetFolderPath() end, 'nvimtree: open tree in SHGetFolderPath(sel)', mode = { 'n', 'v', }, silent = true, },
+  ['<leader>dj'] = { function() M.open_next_tree_node() end, 'quick open: nvimtree next node', mode = { 'n', 'v', }, silent = true, },
+  ['<leader>dk'] = { function() M.open_prev_tree_node() end, 'quick open: nvimtree prev node', mode = { 'n', 'v', }, silent = true, },
+  ['<leader>dl'] = { function() M.last_dir() end, 'nvimtree: open tree in last dir', mode = { 'n', 'v', }, silent = true, },
+  ['<leader>dm'] = { function() M.sel_my_dirs() end, 'nvimtree: open tree in my dirs(sel)', mode = { 'n', 'v', }, silent = true, },
+  ['<leader>dn'] = { ':<c-u>NvimTreeFindFileToggle<cr>', 'nvimtree: toggle(force)', mode = { 'n', 'v', }, silent = true, },
+  ['<leader>do'] = { function() M.open_all() end, 'nvimtree: open_all', mode = { 'n', 'v', }, silent = true, },
+  ['<leader>dp'] = { function() M.sel_parent_dirs() end, 'nvimtree: open tree in parent dirs(sel)', mode = { 'n', 'v', }, silent = true, },
   ['<leader>dr'] = { function() M.reset_nvimtree() end, 'nvimtree: reset nvimtree', mode = { 'n', }, silent = true, },
 }
 
