@@ -1,9 +1,17 @@
 local M = {}
 
-local B = require 'dp_base'
+local sta, B = pcall(require, 'dp_base')
 
 M.source = B.getsource(debug.getinfo(1)['source'])
 M.lua = B.getlua(M.source)
+
+if not sta then return print('Dp_base is required!', debug.getinfo(1)['source']) end
+
+if B.check_plugins {
+      'git@github.com:peter-lyr/dp_git',
+    } then
+  return
+end
 
 M.ausize_en = 1
 
