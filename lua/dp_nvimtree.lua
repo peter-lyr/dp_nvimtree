@@ -718,11 +718,22 @@ function M.open_all_nvimtree()
   B.cmd('b%d', cur_bufnr)
 end
 
+B.aucmd({ 'BufEnter', }, 'nvimtree.BufEnter', {
+  callback = function()
+    if vim.bo.ft == 'NvimTree' then
+      M._cur_root_do_en = 1
+    end
+  end,
+})
+
 B.aucmd('DirChanged', 'nvimtree.DirChanged', {
   callback = function()
-    B.set_timeout(30, function()
-      M._cur_root_do()
-    end)
+    if M._cur_root_do_en then
+      M._cur_root_do_en = nil
+      B.set_timeout(30, function()
+        M._cur_root_do()
+      end)
+    end
   end,
 })
 
@@ -734,7 +745,7 @@ B.aucmd({ 'CursorHold', 'CursorHoldI', }, 'nvimtree.CursorHold', {
   end,
 })
 
-B.aucmd({ 'BufEnter', 'DirChanged', 'CursorHold', }, 'nvimtree.BufEnter', {
+B.aucmd({ 'BufEnter', 'DirChanged', 'CursorHold', }, 'nvimtree.BufEnter/DirChanged', {
   callback = function(ev)
     if vim.bo.ft == 'NvimTree' and B.is(M.ausize_en) then
       local winid = vim.fn.win_getid(vim.fn.bufwinnr(ev.buf))
