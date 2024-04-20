@@ -219,7 +219,7 @@ function M.test_22(node)
   print('M.get_root_dir_path():', M.get_root_dir_path(node))
 end
 
-function M.ausize_do(winid)
+function M._ausize_do(winid)
   local max = 0
   local min_nr = vim.fn.line 'w0'
   if min_nr == 1 then
@@ -252,7 +252,7 @@ function M.ausize_toggle()
     end
   else
     if B.is_buf_fts('NvimTree', vim.fn.bufnr()) then
-      M.ausize_do(vim.fn.win_getid())
+      M._ausize_do(vim.fn.win_getid())
     else
       local old_winid = vim.fn.win_getid()
       local nvt_winid = nil
@@ -264,7 +264,7 @@ function M.ausize_toggle()
         end
       end
       if nvt_winid then
-        M.ausize_do(nvt_winid)
+        M._ausize_do(nvt_winid)
         vim.fn.win_gotoid(old_winid)
       end
     end
@@ -279,17 +279,8 @@ function M.sel_dirs()
   M._sel_dirs_do(M.dirs, 'dirs')
 end
 
-function M.get_path_dirs()
-  local temp = vim.split(vim.fn.getenv 'path', ';')
-  local dirs = {}
-  for _, i in ipairs(temp) do
-    B.stack_item_uniq(dirs, i)
-  end
-  return dirs
-end
-
 function M.sel_path_dirs()
-  M._sel_dirs_do(M.get_path_dirs(), 'path dirs')
+  M._sel_dirs_do(B.get_path_dirs(), 'path dirs')
 end
 
 function M._is_nvim_tree_opened()
@@ -749,7 +740,7 @@ B.aucmd({ 'BufEnter', 'DirChanged', 'CursorHold', }, 'nvimtree.BufEnter', {
       local winid = vim.fn.win_getid(vim.fn.bufwinnr(ev.buf))
       vim.fn.timer_start(10, function()
         if B.is_buf_fts('NvimTree', ev.buf) then
-          M.ausize_do(winid)
+          M._ausize_do(winid)
         end
       end)
     end
