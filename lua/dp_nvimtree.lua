@@ -782,6 +782,63 @@ B.aucmd({ 'TabEnter', }, 'nvimtree.TabEnter', {
   end,
 })
 
+local opts = {
+  update_focused_file = {
+    enable = true,
+    update_root = false,
+  },
+  git = {
+    enable = true,
+  },
+  view = {
+    width = 30,
+    -- number = true,
+    -- relativenumber = true,
+    signcolumn = 'auto',
+  },
+  sync_root_with_cwd = true,
+  reload_on_bufenter = true,
+  respect_buf_cwd = true,
+  filesystem_watchers = {
+    enable = false,
+    -- debounce_delay = 50,
+    -- ignore_dirs = { '*.git*', },
+  },
+  filters = {
+    dotfiles = true,
+  },
+  diagnostics = {
+    enable = true,
+    show_on_dirs = true,
+  },
+  modified = {
+    enable = true,
+    show_on_dirs = false,
+    show_on_open_dirs = false,
+  },
+  renderer = {
+    highlight_git = true,
+    highlight_opened_files = 'name',
+    highlight_modified = 'name',
+    special_files = { 'README.md', 'readme.md', },
+    indent_width = 1,
+    indent_markers = {
+      enable = true,
+    },
+  },
+  actions = {
+    open_file = {
+      window_picker = {
+        chars = 'ASDFQWERJKLHNMYUIOPZXCVGTB1234789056',
+        exclude = {
+          filetype = { 'notify', 'packer', 'qf', 'diff', 'fugitive', 'fugitiveblame', 'minimap', 'aerial', },
+          buftype = { 'nofile', 'terminal', 'help', },
+        },
+      },
+    },
+  },
+}
+
 function M._on_attach(bufnr)
   local api = require 'nvim-tree.api'
   B.lazy_map {
@@ -872,68 +929,11 @@ function M._on_attach(bufnr)
     { 'gd', M._wrap_node(M.git_rm_cached), mode = { 'n', }, buffer = bufnr, noremap = true, silent = true, nowait = true, desc = 'nvimtree: git_rm_cached', },
     { 'gc', M._wrap_node(M.git_checkout),  mode = { 'n', }, buffer = bufnr, noremap = true, silent = true, nowait = true, desc = 'nvimtree: git_checkout', },
   }
-  B.lazy_map {
-    { '<leader>dt', M._wrap_node(M.test_22), mode = { 'n', 'v', }, buffer = bufnr, noremap = true, silent = true, nowait = true, desc = 'nvimtree: test_22', },
-  }
+  -- B.lazy_map {
+  --   { '<leader>dt', M._wrap_node(M.test_22), mode = { 'n', 'v', }, buffer = bufnr, noremap = true, silent = true, nowait = true, desc = 'nvimtree: test_22', },
+  -- }
   vim.cmd [[call feedkeys("d\<esc>")]]
 end
-
-local opts = {
-  update_focused_file = {
-    enable = true,
-    update_root = false,
-  },
-  git = {
-    enable = true,
-  },
-  view = {
-    width = 30,
-    -- number = true,
-    -- relativenumber = true,
-    signcolumn = 'auto',
-  },
-  sync_root_with_cwd = true,
-  reload_on_bufenter = true,
-  respect_buf_cwd = true,
-  filesystem_watchers = {
-    enable = false,
-    -- debounce_delay = 50,
-    -- ignore_dirs = { '*.git*', },
-  },
-  filters = {
-    dotfiles = true,
-  },
-  diagnostics = {
-    enable = true,
-    show_on_dirs = true,
-  },
-  modified = {
-    enable = true,
-    show_on_dirs = false,
-    show_on_open_dirs = false,
-  },
-  renderer = {
-    highlight_git = true,
-    highlight_opened_files = 'name',
-    highlight_modified = 'name',
-    special_files = { 'README.md', 'readme.md', },
-    indent_width = 1,
-    indent_markers = {
-      enable = true,
-    },
-  },
-  actions = {
-    open_file = {
-      window_picker = {
-        chars = 'ASDFQWERJKLHNMYUIOPZXCVGTB1234789056',
-        exclude = {
-          filetype = { 'notify', 'packer', 'qf', 'diff', 'fugitive', 'fugitiveblame', 'minimap', 'aerial', },
-          buftype = { 'nofile', 'terminal', 'help', },
-        },
-      },
-    },
-  },
-}
 
 opts['on_attach'] = M._on_attach
 
