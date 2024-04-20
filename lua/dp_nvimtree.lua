@@ -29,9 +29,7 @@ M.run_whats_list = {
 
 M._run_what_dict = {}
 
-if not M.dirs then
-  M.dirs = {}
-end
+B.l(M.dirs, {})
 
 M._run_whats_dict = {}
 
@@ -41,8 +39,10 @@ function M._wrap_run_what(exe)
   end
 end
 
-for _, exe in ipairs(M.run_what_list) do
-  M._run_what_dict[exe] = M._wrap_run_what(exe)
+function M._init_run_what_list()
+  for _, exe in ipairs(M.run_what_list) do
+    M._run_what_dict[exe] = M._wrap_run_what(exe)
+  end
 end
 
 function M._run_what(what)
@@ -91,8 +91,10 @@ function M._wrap_run_whats(exe)
   end
 end
 
-for _, exe in ipairs(M.run_whats_list) do
-  M._run_whats_dict[exe] = M._wrap_run_whats(exe)
+function M._init_run_whats_list()
+  for _, exe in ipairs(M.run_whats_list) do
+    M._run_whats_dict[exe] = M._wrap_run_whats(exe)
+  end
 end
 
 function M._run_whats(what)
@@ -150,8 +152,6 @@ function M.refresh_hl()
     hi NvimTreeSpecialFile guifg=brown gui=bold,underline
   ]]
 end
-
-M.refresh_hl()
 
 function M._tab()
   local api = require 'nvim-tree.api'
@@ -219,8 +219,6 @@ function M.test_22(node)
   print('M.get_root_dir_path():', M.get_root_dir_path(node))
 end
 
----------------------------------------
-
 function M.ausize_do(winid)
   local max = 0
   local min_nr = vim.fn.line 'w0'
@@ -273,30 +271,13 @@ function M.ausize_toggle()
   end
 end
 
-function M.dirs_append(dir)
+function M._append_dirs(dir)
   B.stack_item_uniq(M.dirs, B.rep(dir))
 end
 
-B.aucmd({ 'BufEnter', 'DirChanged', 'CursorHold', }, 'nvimtree.BufEnter', {
-  callback = function(ev)
-    if vim.bo.ft == 'NvimTree' and B.is(M.ausize_en) then
-      local winid = vim.fn.win_getid(vim.fn.bufwinnr(ev.buf))
-      vim.fn.timer_start(10, function()
-        if B.is_buf_fts('NvimTree', ev.buf) then
-          M.ausize_do(winid)
-        end
-      end)
-    end
-    if vim.bo.ft == 'NvimTree' then
-      vim.cmd 'set nowinfixheight'
-    end
-    if ev.event == 'DirChanged' then
-      M.dirs_append(vim.loop.cwd())
-    end
-  end,
-})
-
-function M.sel_dirs() M._sel_dirs_do(M.dirs, 'dirs') end
+function M.sel_dirs()
+  M._sel_dirs_do(M.dirs, 'dirs')
+end
 
 function M.get_path_dirs()
   local temp = vim.split(vim.fn.getenv 'path', ';')
@@ -320,24 +301,6 @@ function M.is_nvim_tree_opened()
   end
   return nil
 end
-
-B.aucmd({ 'TabEnter', }, 'nvimtree.TabEnter', {
-  callback = function()
-    local cur_nvim_tree = nil
-    if B.is_buf_fts 'NvimTree' then
-      cur_nvim_tree = 1
-    end
-    if M.is_nvim_tree_opened() then
-      vim.cmd 'NvimTreeClose'
-      B.set_timeout(10, function()
-        vim.cmd 'NvimTreeFindFile'
-        if not cur_nvim_tree then
-          vim.cmd 'wincmd p'
-        end
-      end)
-    end
-  end,
-})
 
 function M._toggle_sel(node)
   require 'nvim-tree.marks'.toggle_mark(node)
@@ -594,14 +557,6 @@ function M.toggle()
   end
 end
 
-B.aucmd({ 'CursorHold', 'CursorHoldI', }, 'nvimtree.CursorHold', {
-  callback = function(ev)
-    if B.is_buf_fts('NvimTree', ev.buf) then
-      M._last_dir = vim.loop.cwd()
-    end
-  end,
-})
-
 function M.open_next_tree_node()
   vim.cmd 'NvimTreeFindFile'
   vim.cmd 'norm j'
@@ -668,63 +623,6 @@ function M.reopen_nvimtree()
   B.echo 'reset_nvimtree: config.nvim.nvimtree'
 end
 
-local opts = {
-  update_focused_file = {
-    enable = true,
-    update_root = false,
-  },
-  git = {
-    enable = true,
-  },
-  view = {
-    width = 30,
-    -- number = true,
-    -- relativenumber = true,
-    signcolumn = 'auto',
-  },
-  sync_root_with_cwd = true,
-  reload_on_bufenter = true,
-  respect_buf_cwd = true,
-  filesystem_watchers = {
-    enable = false,
-    -- debounce_delay = 50,
-    -- ignore_dirs = { '*.git*', },
-  },
-  filters = {
-    dotfiles = true,
-  },
-  diagnostics = {
-    enable = true,
-    show_on_dirs = true,
-  },
-  modified = {
-    enable = true,
-    show_on_dirs = false,
-    show_on_open_dirs = false,
-  },
-  renderer = {
-    highlight_git = true,
-    highlight_opened_files = 'name',
-    highlight_modified = 'name',
-    special_files = { 'README.md', 'readme.md', },
-    indent_width = 1,
-    indent_markers = {
-      enable = true,
-    },
-  },
-  actions = {
-    open_file = {
-      window_picker = {
-        chars = 'ASDFQWERJKLHNMYUIOPZXCVGTB1234789056',
-        exclude = {
-          filetype = { 'notify', 'packer', 'qf', 'diff', 'fugitive', 'fugitiveblame', 'minimap', 'aerial', },
-          buftype = { 'nofile', 'terminal', 'help', },
-        },
-      },
-    },
-  },
-}
-
 function M.fd(node)
   local dtarget = M._get_dtarget(node)
   if not dtarget then
@@ -788,7 +686,7 @@ function M._cur_root_do()
     return
   end
   require 'nvim-tree'.change_dir(cwd)
-  M.dirs_append(cwd)
+  M._append_dirs(cwd)
 end
 
 function M.toggle_cur_root()
@@ -832,6 +730,51 @@ B.aucmd('DirChanged', 'nvimtree.DirChanged', {
     B.set_timeout(30, function()
       M._cur_root_do()
     end)
+  end,
+})
+
+B.aucmd({ 'CursorHold', 'CursorHoldI', }, 'nvimtree.CursorHold', {
+  callback = function(ev)
+    if B.is_buf_fts('NvimTree', ev.buf) then
+      M._last_dir = vim.loop.cwd()
+    end
+  end,
+})
+
+B.aucmd({ 'BufEnter', 'DirChanged', 'CursorHold', }, 'nvimtree.BufEnter', {
+  callback = function(ev)
+    if vim.bo.ft == 'NvimTree' and B.is(M.ausize_en) then
+      local winid = vim.fn.win_getid(vim.fn.bufwinnr(ev.buf))
+      vim.fn.timer_start(10, function()
+        if B.is_buf_fts('NvimTree', ev.buf) then
+          M.ausize_do(winid)
+        end
+      end)
+    end
+    if vim.bo.ft == 'NvimTree' then
+      vim.cmd 'set nowinfixheight'
+    end
+    if ev.event == 'DirChanged' then
+      M._append_dirs(vim.loop.cwd())
+    end
+  end,
+})
+
+B.aucmd({ 'TabEnter', }, 'nvimtree.TabEnter', {
+  callback = function()
+    local cur_nvim_tree = nil
+    if B.is_buf_fts 'NvimTree' then
+      cur_nvim_tree = 1
+    end
+    if M.is_nvim_tree_opened() then
+      vim.cmd 'NvimTreeClose'
+      B.set_timeout(10, function()
+        vim.cmd 'NvimTreeFindFile'
+        if not cur_nvim_tree then
+          vim.cmd 'wincmd p'
+        end
+      end)
+    end
   end,
 })
 
@@ -927,9 +870,72 @@ function M._on_attach(bufnr)
   vim.cmd [[call feedkeys("d\<esc>")]]
 end
 
+local opts = {
+  update_focused_file = {
+    enable = true,
+    update_root = false,
+  },
+  git = {
+    enable = true,
+  },
+  view = {
+    width = 30,
+    -- number = true,
+    -- relativenumber = true,
+    signcolumn = 'auto',
+  },
+  sync_root_with_cwd = true,
+  reload_on_bufenter = true,
+  respect_buf_cwd = true,
+  filesystem_watchers = {
+    enable = false,
+    -- debounce_delay = 50,
+    -- ignore_dirs = { '*.git*', },
+  },
+  filters = {
+    dotfiles = true,
+  },
+  diagnostics = {
+    enable = true,
+    show_on_dirs = true,
+  },
+  modified = {
+    enable = true,
+    show_on_dirs = false,
+    show_on_open_dirs = false,
+  },
+  renderer = {
+    highlight_git = true,
+    highlight_opened_files = 'name',
+    highlight_modified = 'name',
+    special_files = { 'README.md', 'readme.md', },
+    indent_width = 1,
+    indent_markers = {
+      enable = true,
+    },
+  },
+  actions = {
+    open_file = {
+      window_picker = {
+        chars = 'ASDFQWERJKLHNMYUIOPZXCVGTB1234789056',
+        exclude = {
+          filetype = { 'notify', 'packer', 'qf', 'diff', 'fugitive', 'fugitiveblame', 'minimap', 'aerial', },
+          buftype = { 'nofile', 'terminal', 'help', },
+        },
+      },
+    },
+  },
+}
+
 opts['on_attach'] = M._on_attach
 
 require 'nvim-tree'.setup(opts)
+
+M.refresh_hl()
+
+M._init_run_what_list()
+
+M._init_run_whats_list()
 
 require 'which-key'.register {
   ['<leader>d'] = { name = 'nvimtree', },
