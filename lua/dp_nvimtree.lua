@@ -8,6 +8,7 @@ M.lua = B.getlua(M.source)
 if not sta then return print('Dp_base is required!', debug.getinfo(1)['source']) end
 
 if B.check_plugins {
+      'git@github.com:peter-lyr/dp_init',
       'git@github.com:peter-lyr/dp_git',
     } then
   return
