@@ -964,7 +964,9 @@ require 'which-key'.register {
   ['<leader>dc'] = { function() M.toggle_cur_root() end, B.b(M, 'toggle_cur_root'), mode = { 'n', 'v', }, silent = true, },
   ['<leader>dj'] = { function() M.open_next_tree_node() end, B.b(M, 'open_next_tree_node'), mode = { 'n', 'v', }, silent = true, },
   ['<leader>dk'] = { function() M.open_prev_tree_node() end, B.b(M, 'open_prev_tree_node'), mode = { 'n', 'v', }, silent = true, },
+  ['<leader>do'] = { name = 'open', },
   ['<leader>doa'] = { function() M.open_all_nvimtree() end, B.b(M, 'open_all_nvimtree'), mode = { 'n', 'v', }, silent = true, },
+  ['<leader>dr'] = { name = 'refresh/reopen', },
   ['<leader>drh'] = { function() M.refresh_hl() end, B.b(M, 'refresh_hl'), mode = { 'n', 'v', }, silent = true, },
   ['<leader>dro'] = { function() M.reopen_nvimtree() end, B.b(M, 'reopen_nvimtree'), mode = { 'n', }, silent = true, },
 }
