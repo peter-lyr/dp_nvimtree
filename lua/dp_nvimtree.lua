@@ -516,11 +516,11 @@ function M.sel_SHGetFolderPath()
 end
 
 function M.sel_from_all_git_repos()
-  M._sel_dirs_do(require 'dp_git'.get_all_git_repos(), 'all_git_repos')
+  M._sel_dirs_do(B.get_all_git_repos(), 'all_git_repos')
 end
 
 function M.scan_all_git_repos()
-  require 'dp_git'.get_all_git_repos(1)
+  B.get_all_git_repos(1)
 end
 
 function M.last_dir()
