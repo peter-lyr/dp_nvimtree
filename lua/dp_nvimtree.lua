@@ -966,4 +966,5 @@ require 'which-key'.register {
   ['<leader>dro'] = { function() M.reopen_nvimtree() end, B.b(M, 'reopen_nvimtree'), mode = { 'n', }, silent = true, },
 }
 
+
 return M
