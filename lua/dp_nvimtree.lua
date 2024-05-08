@@ -636,34 +636,30 @@ function M.encrypt(node)
   B.cmd('CryptEn %s', node.absolute_path)
 end
 
-function M.git_add_force(node)
-  B.system_run('start silent', 'git add -f %s', node.absolute_path)
+function M.git_done()
   B.set_timeout(100, function()
+    local cwd = B.rep(vim.loop.cwd())
     require 'nvim-tree.api'.tree.reload()
     local winid = vim.fn.win_getid()
-    vim.cmd 'windo e!'
+    pcall(vim.cmd, 'windo e!')
     vim.fn.win_gotoid(winid)
+    require 'nvim-tree'.change_dir(cwd)
   end)
+end
+
+function M.git_add_force(node)
+  B.system_run('start silent', 'git add -f %s', node.absolute_path)
+  M.git_done()
 end
 
 function M.git_rm_cached(node)
   B.system_run('start silent', 'git rm --cached %s', node.absolute_path)
-  B.set_timeout(100, function()
-    require 'nvim-tree.api'.tree.reload()
-    local winid = vim.fn.win_getid()
-    vim.cmd 'windo e!'
-    vim.fn.win_gotoid(winid)
-  end)
+  M.git_done()
 end
 
 function M.git_checkout(node)
   B.system_run('start silent', 'git checkout -- %s', node.absolute_path)
-  B.set_timeout(100, function()
-    require 'nvim-tree.api'.tree.reload()
-    local winid = vim.fn.win_getid()
-    vim.cmd 'windo e!'
-    vim.fn.win_gotoid(winid)
-  end)
+  M.git_done()
 end
 
 function M._cur_root_do()
