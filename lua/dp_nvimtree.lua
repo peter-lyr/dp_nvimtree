@@ -640,6 +640,9 @@ function M.git_add_force(node)
   B.system_run('start silent', 'git add -f %s', node.absolute_path)
   B.set_timeout(100, function()
     require 'nvim-tree.api'.tree.reload()
+    local winid = vim.fn.win_getid()
+    vim.cmd 'windo e!'
+    vim.fn.win_gotoid(winid)
   end)
 end
 
@@ -647,6 +650,9 @@ function M.git_rm_cached(node)
   B.system_run('start silent', 'git rm --cached %s', node.absolute_path)
   B.set_timeout(100, function()
     require 'nvim-tree.api'.tree.reload()
+    local winid = vim.fn.win_getid()
+    vim.cmd 'windo e!'
+    vim.fn.win_gotoid(winid)
   end)
 end
 
@@ -654,6 +660,9 @@ function M.git_checkout(node)
   B.system_run('start silent', 'git checkout -- %s', node.absolute_path)
   B.set_timeout(100, function()
     require 'nvim-tree.api'.tree.reload()
+    local winid = vim.fn.win_getid()
+    vim.cmd 'windo e!'
+    vim.fn.win_gotoid(winid)
   end)
 end
 
