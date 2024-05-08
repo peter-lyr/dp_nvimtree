@@ -921,9 +921,9 @@ function M._on_attach(bufnr)
     { 'pf', M._wrap_node(M.find_files), mode = { 'n', }, buffer = bufnr, noremap = true, silent = true, nowait = true, desc = 'nvimtree: fd', },
   }
   B.lazy_map {
-    { 'ga', M._wrap_node(M.git_add_force), mode = { 'n', }, buffer = bufnr, noremap = true, silent = true, nowait = true, desc = 'nvimtree: git_add_force', },
-    { 'gd', M._wrap_node(M.git_rm_cached), mode = { 'n', }, buffer = bufnr, noremap = true, silent = true, nowait = true, desc = 'nvimtree: git_rm_cached', },
-    { 'gc', M._wrap_node(M.git_checkout),  mode = { 'n', }, buffer = bufnr, noremap = true, silent = true, nowait = true, desc = 'nvimtree: git_checkout', },
+    { 'g<leader>a', M._wrap_node(M.git_add_force), mode = { 'n', }, buffer = bufnr, noremap = true, silent = true, nowait = true, desc = 'nvimtree: git_add_force', },
+    { 'g<leader>d', M._wrap_node(M.git_rm_cached), mode = { 'n', }, buffer = bufnr, noremap = true, silent = true, nowait = true, desc = 'nvimtree: git_rm_cached', },
+    { 'g<leader>c', M._wrap_node(M.git_checkout),  mode = { 'n', }, buffer = bufnr, noremap = true, silent = true, nowait = true, desc = 'nvimtree: git_checkout', },
   }
   -- B.lazy_map {
   --   { '<leader>dt', M._wrap_node(M.test_22), mode = { 'n', 'v', }, buffer = bufnr, noremap = true, silent = true, nowait = true, desc = 'nvimtree: test_22', },
