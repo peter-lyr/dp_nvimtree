@@ -941,29 +941,31 @@ M._init_run_what_list()
 
 M._init_run_whats_list()
 
-require 'which-key'.register {
-  ['<leader>nv'] = { name = 'nvimtree', },
-  ['<leader>nv;'] = { function() M.toggle() end, B.b(M, 'toggle'), mode = { 'n', 'v', }, silent = true, },
-  ['<leader>nv\''] = { ':<c-u>NvimTreeFindFileToggle<cr>', B.b(M, 'NvimTreeFindFileToggle'), mode = { 'n', 'v', }, silent = true, },
-  ['<leader>nvd'] = { name = 'nvimtree.sel_dir', },
-  ['<leader>nvdl'] = { function() M.last_dir() end, B.b(M, 'last_dir'), mode = { 'n', 'v', }, silent = true, },
-  ['<leader>nvdd'] = { function() M.sel_dirs() end, B.b(M, 'sel_dirs'), mode = { 'n', 'v', }, silent = true, },
-  ['<leader>nvdr'] = { function() M.sel_dirvers() end, B.b(M, 'sel_dirvers'), mode = { 'n', 'v', }, silent = true, },
-  ['<leader>nvdu'] = { function() M.sel_parent_dirs() end, B.b(M, 'sel_parent_dirs'), mode = { 'n', 'v', }, silent = true, },
-  ['<leader>nvdp'] = { function() M.sel_path_dirs() end, B.b(M, 'sel_path_dirs'), mode = { 'n', 'v', }, silent = true, },
-  ['<leader>nvdg'] = { function() M.sel_from_all_git_repos() end, B.b(M, 'sel_from_all_git_repos'), mode = { 'n', 'v', }, silent = true, },
-  ['<leader>nvd<c-g>'] = { function() M.scan_all_git_repos() end, B.b(M, 'scan_all_git_repos'), mode = { 'n', 'v', }, silent = true, },
-  ['<leader>nvdh'] = { function() M.sel_SHGetFolderPath() end, B.b(M, 'sel_SHGetFolderPath'), mode = { 'n', 'v', }, silent = true, },
-  ['<leader>nvdm'] = { function() M.sel_my_dirs() end, B.b(M, 'sel_my_dirs'), mode = { 'n', 'v', }, silent = true, },
-  ['<leader>nva'] = { function() M.ausize_toggle() end, B.b(M, 'ausize_toggle'), mode = { 'n', 'v', }, silent = true, },
-  ['<leader>nvc'] = { function() M.toggle_cur_root() end, B.b(M, 'toggle_cur_root'), mode = { 'n', 'v', }, silent = true, },
-  ['<leader>nvj'] = { function() M.open_next_tree_node() end, B.b(M, 'open_next_tree_node'), mode = { 'n', 'v', }, silent = true, },
-  ['<leader>nvk'] = { function() M.open_prev_tree_node() end, B.b(M, 'open_prev_tree_node'), mode = { 'n', 'v', }, silent = true, },
-  ['<leader>nvo'] = { name = 'open', },
-  ['<leader>nvoa'] = { function() M.open_all_nvimtree() end, B.b(M, 'open_all_nvimtree'), mode = { 'n', 'v', }, silent = true, },
-  ['<leader>nvr'] = { name = 'refresh/reopen', },
-  ['<leader>nvrh'] = { function() M.refresh_hl() end, B.b(M, 'refresh_hl'), mode = { 'n', 'v', }, silent = true, },
-  ['<leader>nvro'] = { function() M.reopen_nvimtree() end, B.b(M, 'reopen_nvimtree'), mode = { 'n', }, silent = true, },
-}
+function M._map()
+  require 'which-key'.register {
+    ['<leader>n'] = { name = 'nvimtree', },
+    ['<leader>n<leader>'] = { ':<c-u>NvimTreeFindFileToggle<cr>', B.b(M, 'NvimTreeFindFileToggle'), mode = { 'n', 'v', }, silent = true, },
+    ['<leader>n;'] = { function() M.toggle() end, B.b(M, 'toggle'), mode = { 'n', 'v', }, silent = true, },
+    ['<leader>nd'] = { name = 'nvimtree.sel_dir', },
+    ['<leader>ndl'] = { function() M.last_dir() end, B.b(M, 'last_dir'), mode = { 'n', 'v', }, silent = true, },
+    ['<leader>ndd'] = { function() M.sel_dirs() end, B.b(M, 'sel_dirs'), mode = { 'n', 'v', }, silent = true, },
+    ['<leader>ndr'] = { function() M.sel_dirvers() end, B.b(M, 'sel_dirvers'), mode = { 'n', 'v', }, silent = true, },
+    ['<leader>ndu'] = { function() M.sel_parent_dirs() end, B.b(M, 'sel_parent_dirs'), mode = { 'n', 'v', }, silent = true, },
+    ['<leader>ndp'] = { function() M.sel_path_dirs() end, B.b(M, 'sel_path_dirs'), mode = { 'n', 'v', }, silent = true, },
+    ['<leader>ndg'] = { function() M.sel_from_all_git_repos() end, B.b(M, 'sel_from_all_git_repos'), mode = { 'n', 'v', }, silent = true, },
+    ['<leader>nd<c-g>'] = { function() M.scan_all_git_repos() end, B.b(M, 'scan_all_git_repos'), mode = { 'n', 'v', }, silent = true, },
+    ['<leader>ndh'] = { function() M.sel_SHGetFolderPath() end, B.b(M, 'sel_SHGetFolderPath'), mode = { 'n', 'v', }, silent = true, },
+    ['<leader>ndm'] = { function() M.sel_my_dirs() end, B.b(M, 'sel_my_dirs'), mode = { 'n', 'v', }, silent = true, },
+    ['<leader>na'] = { function() M.ausize_toggle() end, B.b(M, 'ausize_toggle'), mode = { 'n', 'v', }, silent = true, },
+    ['<leader>nc'] = { function() M.toggle_cur_root() end, B.b(M, 'toggle_cur_root'), mode = { 'n', 'v', }, silent = true, },
+    ['<leader>nj'] = { function() M.open_next_tree_node() end, B.b(M, 'open_next_tree_node'), mode = { 'n', 'v', }, silent = true, },
+    ['<leader>nk'] = { function() M.open_prev_tree_node() end, B.b(M, 'open_prev_tree_node'), mode = { 'n', 'v', }, silent = true, },
+    ['<leader>no'] = { name = 'open', },
+    ['<leader>noa'] = { function() M.open_all_nvimtree() end, B.b(M, 'open_all_nvimtree'), mode = { 'n', 'v', }, silent = true, },
+    ['<leader>nr'] = { name = 'refresh/reopen', },
+    ['<leader>nrh'] = { function() M.refresh_hl() end, B.b(M, 'refresh_hl'), mode = { 'n', 'v', }, silent = true, },
+    ['<leader>nro'] = { function() M.reopen_nvimtree() end, B.b(M, 'reopen_nvimtree'), mode = { 'n', }, silent = true, },
+  }
+end
 
 return M
