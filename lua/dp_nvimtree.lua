@@ -638,12 +638,12 @@ end
 
 function M.git_done()
   B.set_timeout(100, function()
-    local cwd = B.rep(vim.loop.cwd())
+    -- local cwd = B.rep(vim.loop.cwd())
     require 'nvim-tree.api'.tree.reload()
-    local winid = vim.fn.win_getid()
-    pcall(vim.cmd, 'windo e!')
-    vim.fn.win_gotoid(winid)
-    require 'nvim-tree'.change_dir(cwd)
+    -- local winid = vim.fn.win_getid()
+    -- pcall(vim.cmd, 'windo e!')
+    -- vim.fn.win_gotoid(winid)
+    -- require 'nvim-tree'.change_dir(cwd)
   end)
 end
 
