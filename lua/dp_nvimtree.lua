@@ -609,7 +609,7 @@ end
 function M.reopen_nvimtree()
   package.loaded[M.lua] = nil
   require 'dp_nvimtree'
-  B.echo 'reset_nvimtree: config.nvim.nvimtree'
+  B.echo('reset_nvimtree: ' .. M.source)
 end
 
 function M.find_files(node)
