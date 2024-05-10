@@ -628,14 +628,6 @@ function M.live_grep(node)
   B.cmd('Telescope live_grep cwd=%s previewer=true', dtarget .. '\\\\')
 end
 
-function M.decrypt(node)
-  B.cmd('CryptDe %s', node.absolute_path)
-end
-
-function M.encrypt(node)
-  B.cmd('CryptEn %s', node.absolute_path)
-end
-
 function M.git_done()
   B.set_timeout(100, function()
     require 'nvim-tree.api'.tree.reload()
@@ -912,10 +904,6 @@ function M._on_attach(bufnr)
     { 'pp',  function() M._run_what '"wmplayer.exe"' end, mode = { 'n', }, buffer = bufnr, noremap = true, silent = true, nowait = true, desc = 'nvimtree: wmplayer', },
     { 'pb',  function() M._run_whats '"bcomp.exe"' end,   mode = { 'n', }, buffer = bufnr, noremap = true, silent = true, nowait = true, desc = 'nvimtree: bcomp', },
   }
-  -- B.lazy_map {
-  --   { 'pd', M._wrap_node(M.decrypt), mode = { 'n', }, buffer = bufnr, noremap = true, silent = true, nowait = true, desc = 'nvimtree: decrypt', },
-  --   { 'pe', M._wrap_node(M.encrypt), mode = { 'n', }, buffer = bufnr, noremap = true, silent = true, nowait = true, desc = 'nvimtree: encrypt', },
-  -- }
   B.lazy_map {
     { 'pl', M._wrap_node(M.live_grep),  mode = { 'n', }, buffer = bufnr, noremap = true, silent = true, nowait = true, desc = 'nvimtree: rg', },
     { 'pf', M._wrap_node(M.find_files), mode = { 'n', }, buffer = bufnr, noremap = true, silent = true, nowait = true, desc = 'nvimtree: fd', },
