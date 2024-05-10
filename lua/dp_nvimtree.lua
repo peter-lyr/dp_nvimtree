@@ -16,7 +16,7 @@ end
 
 M.ausize_en = 1
 
-B.l(M.dirs, {})
+B.l(M.cur_roots, {})
 
 M.run_what_list = {
   '"Adobe Audition.exe"',
@@ -273,15 +273,15 @@ function M.ausize_toggle()
 end
 
 function M._append_dirs(dir)
-  B.stack_item_uniq(M.dirs, B.rep(dir))
+  B.stack_item_uniq(M.cur_roots, B.rep(dir))
 end
 
-function M.sel_dirs()
-  M._sel_dirs_do(M.dirs, 'dirs')
+function M.sel_cur_roots()
+  M._sel_cur_roots_do(M.cur_roots, 'cur_roots')
 end
 
 function M.sel_path_dirs()
-  M._sel_dirs_do(B.get_path_dirs(), 'path dirs')
+  M._sel_cur_roots_do(B.get_path_dirs(), 'path dirs')
 end
 
 function M._is_nvim_tree_opened()
@@ -489,29 +489,29 @@ function M.open(dir)
   require 'nvim-tree'.change_dir(dir)
 end
 
-function M._sel_dirs_do(dirs, prompt)
+function M._sel_cur_roots_do(dirs, prompt)
   B.ui_sel(dirs, prompt, function(dir) if dir then M.open(dir) end end)
   B.set_timeout(20, function() vim.cmd [[call feedkeys("\<esc>")]] end)
 end
 
 function M.sel_dirvers()
-  M._sel_dirs_do(B.get_drivers(), 'drivers')
+  M._sel_cur_roots_do(B.get_drivers(), 'drivers')
 end
 
 function M.sel_parent_dirs()
-  M._sel_dirs_do(B.get_file_dirs(vim.loop.cwd()), 'parent_dirs')
+  M._sel_cur_roots_do(B.get_file_dirs(vim.loop.cwd()), 'parent_dirs')
 end
 
 function M.sel_my_dirs()
-  M._sel_dirs_do(B.get_my_dirs(), 'my_dirs')
+  M._sel_cur_roots_do(B.get_my_dirs(), 'my_dirs')
 end
 
 function M.sel_SHGetFolderPath()
-  M._sel_dirs_do(B.get_SHGetFolderPath(), 'SHGetFolderPath')
+  M._sel_cur_roots_do(B.get_SHGetFolderPath(), 'SHGetFolderPath')
 end
 
 function M.sel_from_all_git_repos()
-  M._sel_dirs_do(B.get_all_git_repos(), 'all_git_repos')
+  M._sel_cur_roots_do(B.get_all_git_repos(), 'all_git_repos')
 end
 
 function M.scan_all_git_repos()
@@ -948,7 +948,7 @@ function M._map()
     ['<leader>n;'] = { function() M.toggle() end, B.b(M, 'toggle'), mode = { 'n', 'v', }, silent = true, },
     ['<leader>nd'] = { name = 'nvimtree.sel_dir', },
     ['<leader>ndl'] = { function() M.last_dir() end, B.b(M, 'last_dir'), mode = { 'n', 'v', }, silent = true, },
-    ['<leader>ndd'] = { function() M.sel_dirs() end, B.b(M, 'sel_dirs'), mode = { 'n', 'v', }, silent = true, },
+    ['<leader>ndc'] = { function() M.sel_cur_roots() end, B.b(M, 'sel_cur_roots'), mode = { 'n', 'v', }, silent = true, },
     ['<leader>ndr'] = { function() M.sel_dirvers() end, B.b(M, 'sel_dirvers'), mode = { 'n', 'v', }, silent = true, },
     ['<leader>ndu'] = { function() M.sel_parent_dirs() end, B.b(M, 'sel_parent_dirs'), mode = { 'n', 'v', }, silent = true, },
     ['<leader>ndp'] = { function() M.sel_path_dirs() end, B.b(M, 'sel_path_dirs'), mode = { 'n', 'v', }, silent = true, },
