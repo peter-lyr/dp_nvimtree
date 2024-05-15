@@ -490,7 +490,15 @@ function M.open(dir)
 end
 
 function M._sel_cur_roots_do(dirs, prompt)
-  B.ui_sel(dirs, prompt, function(dir) if dir then M.open(dir) end end)
+  B.ui_sel(dirs, prompt, function(dir)
+    if dir then
+      if vim.fn.isdirectory(dir) == 1 then
+        M.open(dir)
+      else
+        B.notify_error(dir .. ' not exists!')
+      end
+    end
+  end)
   B.set_timeout(20, function() vim.cmd [[call feedkeys("\<esc>")]] end)
 end
 
