@@ -666,7 +666,7 @@ function M._cur_root_do()
     M.cur_root_sta[cwd] = 0
   end
   if M.cur_root_sta[cwd] == 1 then
-    local cur_root = CurRoot[B.rep(cwd)]
+    local cur_root = B.get_telescope_cur_root()[B.rep(cwd)]
     if B.is(cur_root) then
       cwd = cur_root
     end
