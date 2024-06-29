@@ -485,8 +485,14 @@ end
 
 function M.open(dir)
   dir = B.rep(dir)
+  if B.is_file(dir) then
+    dir = B.file_parent(dir)
+  end
   vim.cmd 'NvimTreeOpen'
   require 'nvim-tree'.change_dir(dir)
+  B.set_timeout(100, function()
+    require 'nvim-tree'.change_dir(dir)
+  end)
 end
 
 function M._sel_cur_roots_do(dirs, prompt)
