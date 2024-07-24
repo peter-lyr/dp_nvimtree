@@ -807,7 +807,9 @@ local opts = {
     -- ignore_dirs = { '*.git*', },
   },
   filters = {
-    dotfiles = true,
+    enable = true,
+    git_ignored = false,
+    dotfiles = false,
   },
   diagnostics = {
     enable = true,
