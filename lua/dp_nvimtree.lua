@@ -846,7 +846,6 @@ local opts = {
 function M._on_attach(bufnr)
   local api = require 'nvim-tree.api'
   B.lazy_map {
-    { '<f1>',          api.node.show_info_popup,                    mode = { 'n', }, buffer = bufnr, noremap = true, silent = true, nowait = true, desc = 'nvimtree: Info', },
     { 'dk',            api.node.open.tab,                           mode = { 'n', }, buffer = bufnr, noremap = true, silent = true, nowait = true, desc = 'nvimtree: Open: New Tab', },
     { 'dl',            api.node.open.vertical,                      mode = { 'n', }, buffer = bufnr, noremap = true, silent = true, nowait = true, desc = 'nvimtree: Open: Vertical Split', },
     { 'dj',            api.node.open.horizontal,                    mode = { 'n', }, buffer = bufnr, noremap = true, silent = true, nowait = true, desc = 'nvimtree: Open: Horizontal Split', },
